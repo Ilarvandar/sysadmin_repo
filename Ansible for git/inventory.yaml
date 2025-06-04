@@ -1,0 +1,18 @@
+---
+linux: #Группа хостов 
+  children: #Обозначение, что будет подгруппа хостов
+    nginx: #Имя подгруппы хостов
+      hosts: #Узлы группы
+        vm_1: #основная
+          ansible_host: 158.160.55.161 #Адрес машины
+        vm_2: #прокси
+          ansible_host: 158.160.113.186 #Адрес машины
+        vm_3: #отдающий Nginx
+          ansible_host: 158.160.104.80 #Адрес машины
+  vars: #Переменные, доступные или используемые для всех подгрупп
+    ansible_user: "user1"
+    connection_protocol: ssh #тип подключения
+    ansible_become: true #Становиться ли другим пользователем после подключения
+    ansible_become_method: sudo
+    ansible_become_user: root #На какого пользователя переключиться после подключения
+    ansible_ssh_private_key_file: ./ssh/user1-key

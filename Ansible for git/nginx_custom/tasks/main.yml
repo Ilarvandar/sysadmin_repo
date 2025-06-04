@@ -1,0 +1,27 @@
+---
+# tasks file for nginx_custom
+
+- name: Update and upgrade apt packages
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+  when: "'vm_3' in inventory_hostname" # Выполнится только тогда, когда в имени есть vm_3
+- name: Установка Nginx
+  apt:
+    name: "nginx"
+    state: present
+  when: "'vm_3' in inventory_hostname" # Выполнится только тогда, когда в имени есть vm_3
+- name: Подмена веб-страницы
+  ansible.builtin.template:
+    src: index.j2
+    dest: /var/www/html/index.nginx-debian.html
+  when: "'vm_3' in inventory_hostname" # Выполнится только тогда, когда в имени есть vm_3
+  notify: "Nginx Reloader"
+
+#- name: Настройка прокси
+#  ansible.builtin.template:
+#    src: index_for_proxy.j2
+#    dest: /etc/nginx/nginx.conf
+#  when: "'vm_2' in inventory_hostname" # Выполнится только тогда, когда в имени есть vm_2
+#  notify: "Nginx Reloader"
